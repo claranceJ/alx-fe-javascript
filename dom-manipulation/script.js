@@ -97,13 +97,13 @@ function loadQuotesFromLocalStorage(){
 //Function to load the last viewed quote from session storage
 function LoadLastViewedQuote(){
     const lastViewedQuote = sessionStorage.getItem("lastViewedQuote");
-    if(lastViewedQuote) {
+    if (lastViewedQuote) {
         const quote = JSON.parse(lastViewedQuote);
         const quoteDisplay = document.getElementById("quoteDisplay");
         quoteDisplay.innerHTML=`
-        <p>${quote.text}</p>
-        <p><strong>Category:</strong> ${quote.category}</p>
-        `
+            <p>${quote.text}</p>
+            <p><strong>Category:</strong> ${quote.category}</p>
+        `;
     }
 }
 
@@ -135,9 +135,11 @@ function exportToJsonFile() {
 //--Function to Import quotes from JSON file
 function importFromJsonFile(event) { 
     const fileReader = new FileReader(); 
+
     fileReader.onload = function(event) { 
-        try { const importedQuotes = JSON.parse(event.target.result); 
-            if (Array.isArray(importedQuotes)) { 
+        try {
+            const importedQuotes = JSON.parse(event.target.result); 
+            if (Array.isArray(importedQuotes)) {
                 quotes.push(...importedQuotes); 
                 saveQuotesToLocalStorage(); 
                 alert('Quotes imported successfully!'); 

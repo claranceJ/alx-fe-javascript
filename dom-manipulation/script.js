@@ -1,5 +1,7 @@
-//Array of quote objects
+//---DYNAMIC CONTENT ADVANCE DOM MANIPULATION----//
 
+
+//Array of quote objects
 const quotes = [
 {text: "The best way to predict the future is to create it.", category: "Inspiration"},
 {text: "Life is 10% what happens to us and 90% how we react to it.", category: "Life"},
@@ -16,6 +18,9 @@ function showRandomQuote(){
     <p>${randomQuote.text}</p>
     <p><strong>Category:</stong> ${randomQuote.category}</p>
     `;
+
+    //--Saving the last viewed quote to session storage
+    sessionStorage.setItem("lastViewedQuote",JSON.stringify("randomQuote"));
 }
 
 //----------------function to create the Add Quote form--------------//
@@ -54,7 +59,6 @@ function showRandomQuote(){
 //     })
 
 // }
-
 //---------------------OR------------------------------//
 function addQuote() {
     const newQuoteText = document.getElementById("newQuoteText").value;
@@ -65,6 +69,7 @@ function addQuote() {
             text: newQuoteText,
             category: newQuoteCategory};
         quotes.push(newQuote);
+        saveQuotesToLocalStorage();
         alert("Quote Added succefully!");
 
         //-------clear the input------------//
@@ -76,10 +81,72 @@ function addQuote() {
     }
 }
 
+//--function to save quotes to local storage
+function saveQuotesToLocalStorage(){
+    localStorage.setItem("quotes", JSON.stringify(quotes));
+}
+
+//--function to load quotes from local storage
+function loadQuotesFromLocalStorage(){
+    const storedQuotes = localstorage.getItem("quotes");
+    if(storedQuotes){
+        quotes = JSON.parse(storedQuotes);
+    }
+}
+
+//Function to load the last viewed quote from session storage
+function LoadLastViewedQuote(){
+    const lastViewedQuote = sessionStorage.getItem("lastViewedQuote");
+    if(lastViewedQuote) {
+        const quote = JSON.parse(lastViewedQuote);
+        const quoteDisplay = document.getElementById("quoteDisplay");
+        quoteDisplay.innerHTML=`
+        <p>${quote.text}</p>
+        <p><strong>Category:</strong> ${quote.category}</p>
+        `
+    }
+}
 
 
 //Event Listener to "show new quote button"
 document.getElementById("newQuote").addEventListener("click", showRandomQuote);
 
-//initialize the form and display the first quote
-showRandomQuote();
+//load quotes from local storage
+loadQuotesFromLocalStorage();
+
+//load last viewed quote from session storage
+LoadLastViewedQuote();
+
+//Function to export quote from JSON file
+function exportToJsonFile() { 
+    const dataStr = JSON.stringify(quotes, null, 2);
+    const dataBlob = new Blob([dataStr], { type: "application/json" }); 
+    const url = URL.createObjectURL(dataBlob);
+
+    const downloadLink = document.createElement("a"); 
+    downloadLink.href = url; 
+    downloadLink.download = "quotes.json"; 
+    downloadLink.click();
+
+    //CLEAN UP
+    URL.revokeObjectURL(url);
+}
+
+//--Function to Import quotes from JSON file
+function importFromJsonFile(event) { 
+    const fileReader = new FileReader(); 
+    fileReader.onload = function(event) { 
+        try { const importedQuotes = JSON.parse(event.target.result); 
+            if (Array.isArray(importedQuotes)) { 
+                quotes.push(...importedQuotes); 
+                saveQuotesToLocalStorage(); 
+                alert('Quotes imported successfully!'); 
+            } else { 
+                alert('Invalid JSON format. Please upload a valid JSON file.'); 
+            } 
+        } catch (error) { 
+            alert('Error parsing JSON file. Please upload a valid JSON file.');
+         } 
+    }; 
+    fileReader.readAsText(event.target.files[0]); 
+}

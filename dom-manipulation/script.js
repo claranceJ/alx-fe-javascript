@@ -2,11 +2,7 @@
 
 
 //Array of quote objects
-const quotes = [
-{text: "The best way to predict the future is to create it.", category: "Inspiration"},
-{text: "Life is 10% what happens to us and 90% how we react to it.", category: "Life"},
-{text: "Your time is limited, don't waste it living someone else's life.", category: "Motivation"}
-];
+let quotes = [];
 
 //function to display a random quote
 function showRandomQuote(){
@@ -85,17 +81,38 @@ function addQuote() {
 function saveQuotesToLocalStorage(){
     localStorage.setItem("quotes", JSON.stringify(quotes));
 }
-const storedQuotes = localstorage.getItem("quotes");
+
 //--function to load quotes from local storage
 function loadQuotesFromLocalStorage(){
     const storedQuotes = localstorage.getItem("quotes");
     if(storedQuotes){
         quotes = JSON.parse(storedQuotes);
+    } else{
+        //if no quotes are in local storage
+        quotes = [
+            {
+                "text": "The best way to predict the future is to create it.",
+                "category": "Inspiration"
+            },
+            {
+                "text": "Life is 10% what happens to us and 90% how we react to it.",
+                "category": "Life"
+            },
+            {
+                "text": "Your time is limited, don't waste it living someone else's life.",
+                "category": "Motivation"
+            },
+            {
+                "text": "Ronaldo is the goat",
+                "category": "Footbal"
+            }
+        ];
+        saveQuotesToLocalStorage();
     }
 }
 
 //Function to load the last viewed quote from session storage
-function LoadLastViewedQuote(){
+function LoadLastViewedQuote() {
     const lastViewedQuote = sessionStorage.getItem("lastViewedQuote");
     if (lastViewedQuote) {
         const quote = JSON.parse(lastViewedQuote);

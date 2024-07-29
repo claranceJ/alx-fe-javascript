@@ -85,7 +85,7 @@ function addQuote() {
 function saveQuotesToLocalStorage(){
     localStorage.setItem("quotes", JSON.stringify(quotes));
 }
-
+const storedQuotes = localstorage.getItem("quotes");
 //--function to load quotes from local storage
 function loadQuotesFromLocalStorage(){
     const storedQuotes = localstorage.getItem("quotes");

@@ -12,9 +12,10 @@ function showRandomQuote(){
     <p>${randomQuote.text}</p>
     <p><strong>Category:</stong> ${randomQuote.category}</p>
     `;
-
+    //--function to load quotes from local storage
+    randomQuote = JSON.parse(localstorage.getItem("quotes"));
     //--Saving the last viewed quote to session storage
-    sessionStorage.setItem("lastViewedQuote",JSON.stringify("randomQuote"));
+    sessionStorage.setItem("lastViewedQuote",JSON.stringify(randomQuote));
 }
 //----------------function to create the Add Quote form--------------//
 // function createAddQuoteForm() {
@@ -63,8 +64,9 @@ function addQuote() {
         const newQuote = {
             text: newQuoteText,
             category: newQuoteCategory};
+        
         quotes.push(newQuote);
-        saveQuotesToLocalStorage();
+        
         alert("Quote Added succefully!");
 
         //-------clear the input------------//
@@ -75,8 +77,7 @@ function addQuote() {
         alert("Please enter both a quote and a category!");
     }
 }
-//--function to load quotes from local storage
-const storedQuotes = JSON.parse(localstorage.getItem("quotes"));
+
 //--function to save quotes to local storage
 function saveQuotesToLocalStorage(){
     localStorage.setItem("quotes", JSON.stringify(quotes));

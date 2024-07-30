@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const quoteDisplay = document.getElementById("quoteDisplay");
     const newQuoteButton = document.getElementById("newQuote");
     const exportButton = document.getElementById("exportQuotes");
-    const addQuoteButton = document.getElementById("addQuoteButton");
   
     let quotes = JSON.parse(localStorage.getItem("quotes")) || [];
   
@@ -16,6 +15,32 @@ document.addEventListener("DOMContentLoaded", () => {
       const randomIndex = Math.floor(Math.random() * quotes.length);
       const quote = quotes[randomIndex];
       quoteDisplay.innerHTML = `"${quote.text}" - ${quote.category}`;
+    }
+  
+    // Function to create and add the form for adding new quotes
+    function createAddQuoteForm() {
+      const formContainer = document.createElement("div");
+  
+      const quoteTextInput = document.createElement("input");
+      quoteTextInput.id = "newQuoteText";
+      quoteTextInput.type = "text";
+      quoteTextInput.placeholder = "Enter a new quote";
+  
+      const quoteCategoryInput = document.createElement("input");
+      quoteCategoryInput.id = "newQuoteCategory";
+      quoteCategoryInput.type = "text";
+      quoteCategoryInput.placeholder = "Enter quote category";
+  
+      const addQuoteButton = document.createElement("button");
+      addQuoteButton.id = "addQuoteButton";
+      addQuoteButton.textContent = "Add Quote";
+      addQuoteButton.onclick = addQuote;
+  
+      formContainer.appendChild(quoteTextInput);
+      formContainer.appendChild(quoteCategoryInput);
+      formContainer.appendChild(addQuoteButton);
+  
+      document.body.appendChild(formContainer);
     }
   
     // Function to add a new quote
@@ -61,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
     // Initialize
     newQuoteButton.addEventListener("click", showRandomQuote);
-    addQuoteButton.addEventListener("click", addQuote);
     exportButton.addEventListener("click", exportQuotes);
+    createAddQuoteForm();
   });
   

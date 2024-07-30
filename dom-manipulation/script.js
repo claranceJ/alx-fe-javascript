@@ -24,18 +24,38 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   
     // Function to add a new quote
-    window.addQuote = function() {
+    window.addQuote = async function() {
       const quoteText = document.getElementById("newQuoteText").value;
       const quoteCategory = document.getElementById("newQuoteCategory").value;
   
       if (quoteText && quoteCategory) {
-        quotes.push({ text: quoteText, category: quoteCategory });
+        const newQuote = { text: quoteText, category: quoteCategory };
+        quotes.push(newQuote);
         localStorage.setItem("quotes", JSON.stringify(quotes));
         alert("Quote added successfully!");
         // Clear the input fields after adding the quote
         document.getElementById("newQuoteText").value = "";
         document.getElementById("newQuoteCategory").value = "";
         updateCategories();
+  
+        // Send the new quote to the server
+        try {
+          const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(newQuote)
+          });
+  
+          if (response.ok) {
+            console.log("Quote sent to the server successfully.");
+          } else {
+            console.error("Failed to send quote to the server.");
+          }
+        } catch (error) {
+          console.error("Error:", error);
+        }
       } else {
         alert("Please enter both quote text and category.");
       }

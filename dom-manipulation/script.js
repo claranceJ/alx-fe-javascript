@@ -100,8 +100,8 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem("selectedCategory", categoryFilter.value);
     };
   
-    // Sync quotes with server
-    async function syncQuotesWithServer() {
+    // Function to fetch quotes from server
+    async function fetchQuotesFromServer() {
       try {
         const response = await fetch(apiUrl);
         const serverQuotes = await response.json();
@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   
     // Periodically sync with server every 5 minutes
-    setInterval(syncQuotesWithServer, 300000);
+    setInterval(fetchQuotesFromServer, 300000);
   
     // Initialize
     newQuoteButton.addEventListener("click", showRandomQuote);

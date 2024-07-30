@@ -145,8 +145,14 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
   
+    // Function to sync quotes with the server and handle conflicts
+    async function syncQuotes() {
+      await fetchQuotesFromServer();
+      // Here, you could add any additional conflict resolution logic if needed
+    }
+  
     // Periodically sync with server every 5 minutes
-    setInterval(fetchQuotesFromServer, 300000);
+    setInterval(syncQuotes, 300000);
   
     // Initialize
     newQuoteButton.addEventListener("click", showRandomQuote);

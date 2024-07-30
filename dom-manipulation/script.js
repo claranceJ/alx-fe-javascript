@@ -1,6 +1,4 @@
 //---DYNAMIC CONTENT ADVANCE DOM MANIPULATION----//
-
-
 //Array of quote objects
 let quotes = [];
 
@@ -18,7 +16,6 @@ function showRandomQuote(){
     //--Saving the last viewed quote to session storage
     sessionStorage.setItem("lastViewedQuote",JSON.stringify("randomQuote"));
 }
-
 //----------------function to create the Add Quote form--------------//
 // function createAddQuoteForm() {
 //     const formContainer = document.createElement("div");
@@ -55,6 +52,8 @@ function showRandomQuote(){
 //     })
 
 // }
+
+
 //---------------------OR------------------------------//
 function addQuote() {
     const newQuoteText = document.getElementById("newQuoteText").value;
@@ -76,39 +75,11 @@ function addQuote() {
         alert("Please enter both a quote and a category!");
     }
 }
-
+//--function to load quotes from local storage
+const storedQuotes = JSON.parse(localstorage.getItem("quotes"));
 //--function to save quotes to local storage
 function saveQuotesToLocalStorage(){
     localStorage.setItem("quotes", JSON.stringify(quotes));
-}
-
-//--function to load quotes from local storage
-function loadQuotesFromLocalStorage(){
-    const storedQuotes = localstorage.getItem("quotes");
-    if(storedQuotes){
-        quotes = JSON.parse(storedQuotes);
-    } else{
-        //if no quotes are in local storage
-        quotes = [
-            {
-                "text": "The best way to predict the future is to create it.",
-                "category": "Inspiration"
-            },
-            {
-                "text": "Life is 10% what happens to us and 90% how we react to it.",
-                "category": "Life"
-            },
-            {
-                "text": "Your time is limited, don't waste it living someone else's life.",
-                "category": "Motivation"
-            },
-            {
-                "text": "Ronaldo is the goat",
-                "category": "Footbal"
-            }
-        ];
-        saveQuotesToLocalStorage();
-    }
 }
 
 //Function to load the last viewed quote from session storage
@@ -123,16 +94,15 @@ function LoadLastViewedQuote() {
         `;
     }
 }
-
-
 //Event Listener to "show new quote button"
 document.getElementById("newQuote").addEventListener("click", showRandomQuote);
-
 //load quotes from local storage
-loadQuotesFromLocalStorage();
-
+// loadQuotesFromLocalStorage();
 //load last viewed quote from session storage
 LoadLastViewedQuote();
+
+
+
 
 //Function to export quote from JSON file
 function exportToJsonFile() { 

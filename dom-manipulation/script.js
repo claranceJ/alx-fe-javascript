@@ -7,6 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let quotes = JSON.parse(localStorage.getItem("quotes")) || [];
     let categories = [];
   
+    // Mock API URL
+    const apiUrl = "https://jsonplaceholder.typicode.com/posts"; // Replace with actual endpoint
+  
     // Function to display a random quote
     function showRandomQuote() {
       const filteredQuotes = getFilteredQuotes();
@@ -75,6 +78,12 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   
+    // Function to update categories dropdown
+    function updateCategories() {
+      populateCategories();
+      showRandomQuote();
+    }
+  
     // Function to get filtered quotes based on selected category
     function getFilteredQuotes() {
       const selectedCategory = categoryFilter.value;
@@ -90,6 +99,34 @@ document.addEventListener("DOMContentLoaded", () => {
       showRandomQuote();
       localStorage.setItem("selectedCategory", categoryFilter.value);
     };
+  
+    // Sync quotes with server
+    async function syncQuotesWithServer() {
+      try {
+        const response = await fetch(apiUrl);
+        const serverQuotes = await response.json();
+  
+        // Assuming serverQuotes is an array of quote objects with text and category
+        // You might need to adjust the property names based on your actual server response
+        const newServerQuotes = serverQuotes.map(serverQuote => ({
+          text: serverQuote.title,
+          category: serverQuote.body // Adjust this as necessary
+        }));
+  
+        // Conflict resolution: Server's data takes precedence
+        const mergedQuotes = [...newServerQuotes, ...quotes];
+        quotes = [...new Set(mergedQuotes.map(quote => JSON.stringify(quote)))].map(str => JSON.parse(str));
+  
+        localStorage.setItem("quotes", JSON.stringify(quotes));
+        alert("Quotes synced with server successfully!");
+        updateCategories();
+      } catch (error) {
+        console.error("Error syncing with server:", error);
+      }
+    }
+  
+    // Periodically sync with server every 5 minutes
+    setInterval(syncQuotesWithServer, 300000);
   
     // Initialize
     newQuoteButton.addEventListener("click", showRandomQuote);

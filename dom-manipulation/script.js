@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const newQuoteButton = document.getElementById("newQuote");
     const exportButton = document.getElementById("exportQuotes");
   
+    // Load quotes from localStorage or initialize an empty array
     let quotes = JSON.parse(localStorage.getItem("quotes")) || [];
   
     // Function to display a random quote

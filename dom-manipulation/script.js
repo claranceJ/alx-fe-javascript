@@ -149,6 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
     async function syncQuotes() {
       await fetchQuotesFromServer();
       // Here, you could add any additional conflict resolution logic if needed
+      console.log("Quotes synced with server!");
     }
   
     // Periodically sync with server every 5 minutes

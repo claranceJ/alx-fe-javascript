@@ -63,8 +63,8 @@ document.addEventListener("DOMContentLoaded", () => {
       fileReader.readAsText(event.target.files[0]);
     };
   
-    // Function to update categories dropdown
-    function updateCategories() {
+    // Function to populate categories dropdown
+    function populateCategories() {
       categories = [...new Set(quotes.map(quote => quote.category))];
       categoryFilter.innerHTML = '<option value="all">All Categories</option>';
       categories.forEach(category => {
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
     // Initialize
     newQuoteButton.addEventListener("click", showRandomQuote);
-    updateCategories();
+    populateCategories();
   
     // Restore last selected category filter
     const savedCategory = localStorage.getItem("selectedCategory");
